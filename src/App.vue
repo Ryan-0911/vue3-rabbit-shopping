@@ -1,12 +1,8 @@
-<script setup>
-// import { RouterLink, RouterView } from "vue-router";
-</script>
+<script setup></script>
 
 <template>
-  <el-row class="mb-4">
-    <el-button>Default</el-button>
-    <el-button type="primary">Primary</el-button>
-  </el-row>
+  <!-- 一級路由出口組件 -->
+  <router-view></router-view>
 </template>
 
 <style scoped>
