@@ -1,4 +1,4 @@
-import "./assets/main.css";
+// import "./assets/main.css";
 
 import { createApp } from "vue";
 import { createPinia } from "pinia";
@@ -6,6 +6,7 @@ import { createPinia } from "pinia";
 import App from "./App.vue";
 import router from "./router";
 import { getCategory } from "@/apis/testAPI";
+// 引入初始化文件
 import "@/styles/common.scss";
 
 // 測試API
