@@ -17,3 +17,14 @@ export const getNewAPI = () => {
     url: "/home/new",
   });
 };
+
+/**
+ * @description: 獲取人氣推薦
+ * @param {*}
+ * @return {*}
+ */
+export const getHotAPI = () => {
+  return http({
+    url: "home/hot",
+  });
+};
