@@ -1,6 +1,10 @@
 import http from "@/utils/http";
 
-// 輪播圖
+/**
+ * @description: 獲取輪播圖
+ * @param {*}
+ * @return {*}
+ */
 export function getBannerAPI() {
   return http({
     url: "/home/banner",
@@ -8,7 +12,7 @@ export function getBannerAPI() {
 }
 
 /**
- * @description: 獲取新鲜好物
+ * @description: 獲取新鮮好物
  * @param {*}
  * @return {*}
  */
@@ -26,5 +30,16 @@ export const getNewAPI = () => {
 export const getHotAPI = () => {
   return http({
     url: "home/hot",
+  });
+};
+
+/**
+ * @description: 獲取所有商品
+ * @param {*}
+ * @return {*}
+ */
+export const getGoodsAPI = () => {
+  return http({
+    url: "/home/goods",
   });
 };
