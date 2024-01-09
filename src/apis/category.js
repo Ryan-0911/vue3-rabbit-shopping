@@ -1,4 +1,4 @@
-import request from "@/utils/http";
+import http from "@/utils/http";
 
 /**
  * @description: 獲取分類資料
@@ -6,10 +6,21 @@ import request from "@/utils/http";
  * @return {*}
  */
 export const getTopCategoryAPI = (id) => {
-  return request({
+  return http({
     url: "/category",
     params: {
       id,
     },
   });
 };
+
+export function getBannerAPI(params = {}) {
+  // 默认为1 商品为2
+  const { distributionSite = "1" } = params;
+  return http({
+    url: "/home/banner",
+    params: {
+      distributionSite,
+    },
+  });
+}
