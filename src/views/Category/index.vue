@@ -2,19 +2,19 @@
 import { getTopCategoryAPI } from "@/apis/category";
 import { getBannerAPI } from "@/apis/home";
 import { ref } from "vue";
-import { useRoute } from "vue-router";
+import { useRoute, onBeforeRouteUpdate } from "vue-router";
 import GoodsItem from "@/views/Home/components/GoodsItem.vue";
 
 // breadcrumbs
 const categoryData = ref({});
 const route = useRoute();
-const getCategory = async (id) => {
+const getCategory = async (id = route.params.id) => {
   // 如何在setup中获取路由参数 useRoute() -> route 等价于this.$route
   const res = await getTopCategoryAPI(id);
   console.log(res);
   categoryData.value = res.result;
 };
-getCategory(route.params.id);
+getCategory();
 
 // banner
 const bannerList = ref([]);
@@ -26,6 +26,11 @@ const getBanner = async () => {
   bannerList.value = res.result;
 };
 getBanner();
+
+// 監聽路由變化，變化後執行資料更新
+onBeforeRouteUpdate((to) => {
+  getCategory(to.params.id);
+});
 </script>
 
 <template>
