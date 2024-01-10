@@ -1,7 +1,9 @@
 <script setup>
 import { getCategoryFilterAPI } from "@/apis/category";
+import { getSubCategoryAPI } from "@/apis/category";
 import { useRoute } from "vue-router";
 import { ref } from "vue";
+import GoodsItem from "@/views/Home/components/GoodsItem.vue";
 
 const route = useRoute();
 // 获取面包屑导航数据
@@ -12,6 +14,22 @@ const getFilterData = async () => {
   filterData.value = res.result;
 };
 getFilterData();
+
+// 获取基础列表数据渲染
+const goodList = ref([]);
+const reqData = ref({
+  categoryId: route.params.id,
+  page: 1,
+  pageSize: 20,
+  sortField: "publishTime",
+});
+const getGoodList = async () => {
+  const res = await getSubCategoryAPI(reqData.value);
+  console.log(res);
+  goodList.value = res.result.items;
+};
+
+getGoodList();
 </script>
 
 <template>
@@ -34,7 +52,11 @@ getFilterData();
         <el-tab-pane label="评论最多" name="evaluateNum"></el-tab-pane>
       </el-tabs>
       <div class="body">
-        <!-- 商品列表-->
+        <GoodsItem
+          v-for="good in goodList"
+          :key="good.id"
+          :good="good"
+        ></GoodsItem>
       </div>
     </div>
   </div>
