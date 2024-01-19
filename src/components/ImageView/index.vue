@@ -1,7 +1,6 @@
 <script setup>
-import { ref } from "vue";
+import { ref, watch } from "vue";
 import { useMouseInElement } from "@vueuse/core";
-import { watch } from "vue";
 
 // 图片列表
 const imageList = [
@@ -19,9 +18,12 @@ const mouseEnterFn = (i) => (activeIndex.value = i);
 // 放大鏡
 const target = ref(null);
 const { elementX, elementY, isOutside } = useMouseInElement(target);
-// 3. 控制滑块跟随鼠标移动（监听elementX/Y变化，一旦变化 重新设置left/top）
+
+// 控制滑块跟随鼠标移动（监听elementX/Y变化，一旦变化 重新设置left/top）
 const left = ref(0);
 const top = ref(0);
+const positionX = ref(0);
+const positionY = ref(0);
 
 watch([elementX, elementY, isOutside], () => {
   // 如果滑鼠沒有移入到盒子裡面，直接不執行後面的邏輯
@@ -50,6 +52,10 @@ watch([elementX, elementY, isOutside], () => {
   if (elementY.value < 100) {
     top.value = 0;
   }
+
+  // 控制大图的显示
+  positionX.value = -left.value * 2;
+  positionY.value = -top.value * 2;
 });
 </script>
 <template>
@@ -58,7 +64,11 @@ watch([elementX, elementY, isOutside], () => {
     <div class="middle" ref="target">
       <img :src="imageList[activeIndex]" alt="" />
       <!-- 蒙层小滑块 -->
-      <div class="layer" :style="{ left: `${left}px`, top: `${top}px` }"></div>
+      <div
+        class="layer"
+        :style="{ left: `${left}px`, top: `${top}px` }"
+        v-show="!isOutside"
+      ></div>
     </div>
     <!-- 小图列表 -->
     <ul class="small">
@@ -76,12 +86,12 @@ watch([elementX, elementY, isOutside], () => {
       class="large"
       :style="[
         {
-          backgroundImage: `url(${imageList[0]})`,
-          backgroundPositionX: `0px`,
-          backgroundPositionY: `0px`,
+          backgroundImage: `url(${imageList[activeIndex]})`,
+          backgroundPositionX: `${positionX}px`,
+          backgroundPositionY: `${positionY}px`,
         },
       ]"
-      v-show="false"
+      v-show="!isOutside"
     ></div>
   </div>
 </template>
