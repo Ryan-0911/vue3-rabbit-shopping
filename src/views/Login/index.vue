@@ -14,6 +14,13 @@ const rules = {
     { required: true, message: "密碼不能為空" },
     { min: 6, max: 14, message: "密碼長度要求6-14個字" },
   ],
+  agree: [
+    {
+      validator: (rule, val, callback) => {
+        return val ? callback() : new Error("请先同意协议");
+      },
+    },
+  ],
 };
 </script>
 
