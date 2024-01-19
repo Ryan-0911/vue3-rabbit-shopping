@@ -1,5 +1,7 @@
 <script setup>
 import { ref } from "vue";
+import { useMouseInElement } from "@vueuse/core";
+import { watch } from "vue";
 
 // 图片列表
 const imageList = [
@@ -10,25 +12,60 @@ const imageList = [
   "https://yanxuan-item.nosdn.127.net/f881cfe7de9a576aaeea6ee0d1d24823.jpg",
 ];
 
-// 实现鼠标移入交互
+// 小圖切大圖顯示
 const activeIndex = ref(0);
 const mouseEnterFn = (i) => (activeIndex.value = i);
-</script>
 
+// 放大鏡
+const target = ref(null);
+const { elementX, elementY, isOutside } = useMouseInElement(target);
+// 3. 控制滑块跟随鼠标移动（监听elementX/Y变化，一旦变化 重新设置left/top）
+const left = ref(0);
+const top = ref(0);
+
+watch([elementX, elementY, isOutside], () => {
+  // 如果滑鼠沒有移入到盒子裡面，直接不執行後面的邏輯
+  if (isOutside.value) return;
+
+  // 有效範圍內控制滑塊距離
+  // 横向
+  if (elementX.value >= 100 && elementX.value <= 300) {
+    left.value = elementX.value - 100;
+  }
+  // 縱向
+  if (elementY.value >= 100 && elementY.value <= 300) {
+    top.value = elementY.value - 100;
+  }
+
+  // 處理邊界
+  if (elementX.value > 300) {
+    left.value = 200;
+  }
+  if (elementX.value < 100) {
+    left.value = 0;
+  }
+  if (elementY.value > 300) {
+    top.value = 200;
+  }
+  if (elementY.value < 100) {
+    top.value = 0;
+  }
+});
+</script>
 <template>
   <div class="goods-image">
     <!-- 左侧大图-->
     <div class="middle" ref="target">
       <img :src="imageList[activeIndex]" alt="" />
       <!-- 蒙层小滑块 -->
-      <div class="layer" :style="{ left: `0px`, top: `0px` }"></div>
+      <div class="layer" :style="{ left: `${left}px`, top: `${top}px` }"></div>
     </div>
     <!-- 小图列表 -->
     <ul class="small">
       <li
         v-for="(img, i) in imageList"
         :key="i"
-        @mouseenter="mouseEnterFn(i)"
+        @click="mouseEnterFn(i)"
         :class="{ active: i === activeIndex }"
       >
         <img :src="img" alt="" />
@@ -96,7 +133,7 @@ const mouseEnterFn = (i) => (activeIndex.value = i);
       margin-bottom: 15px;
       cursor: pointer;
 
-      &:hover,
+      //   &:hover,
       &.active {
         border: 2px solid $xtxColor;
       }
