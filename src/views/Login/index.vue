@@ -1,4 +1,21 @@
-<script setup></script>
+<script setup>
+import { ref } from "vue";
+// 表单数据对象
+const userInfo = ref({
+  account: "1311111111",
+  password: "123456",
+  agree: true,
+});
+
+// 规则数据对象
+const rules = {
+  account: [{ required: true, message: "用戶名不能為空" }],
+  password: [
+    { required: true, message: "密碼不能為空" },
+    { min: 6, max: 14, message: "密碼長度要求6-14個字" },
+  ],
+};
+</script>
 
 <template>
   <div>
@@ -21,15 +38,21 @@
         </nav>
         <div class="account-box">
           <div class="form">
-            <el-form label-position="right" label-width="60px" status-icon>
-              <el-form-item label="账户">
-                <el-input />
+            <el-form
+              label-position="right"
+              :model="userInfo"
+              :rules="rules"
+              label-width="60px"
+              status-icon
+            >
+              <el-form-item label="账户" prop="account">
+                <el-input v-model="userInfo.account" />
               </el-form-item>
-              <el-form-item label="密码">
-                <el-input />
+              <el-form-item label="密码" prop="password">
+                <el-input v-model="userInfo.password" />
               </el-form-item>
-              <el-form-item label-width="22px">
-                <el-checkbox size="large">
+              <el-form-item label-width="22px" prop="agree">
+                <el-checkbox size="large" v-model="userInfo.agree">
                   我已同意隐私条款和服务条款
                 </el-checkbox>
               </el-form-item>
