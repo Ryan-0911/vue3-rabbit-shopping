@@ -10,6 +10,7 @@ import { getCategory } from "@/apis/testAPI";
 import "@/styles/common.scss";
 // 引入懶加載插件
 import { lazyLoadPlugin } from "@/directives";
+import { componentPlugin } from "@/components";
 
 // 測試API
 getCategory().then((res) => {
@@ -20,5 +21,6 @@ const app = createApp(App);
 app.use(createPinia());
 app.use(router);
 app.use(lazyLoadPlugin);
+app.use(componentPlugin);
 
 app.mount("#app");
