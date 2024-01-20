@@ -1,4 +1,4 @@
-import http from "@/utils/http";
+import request from "@/utils/request";
 
 /**
  * @description: 獲取一級分類資料
@@ -6,7 +6,7 @@ import http from "@/utils/http";
  * @return {*}
  */
 export const getTopCategoryAPI = (id) => {
-  return http({
+  return request({
     url: "/category",
     params: {
       id,
@@ -17,7 +17,7 @@ export const getTopCategoryAPI = (id) => {
 export function getBannerAPI(params = {}) {
   // 默认为1 商品为2
   const { distributionSite = "1" } = params;
-  return http({
+  return request({
     url: "/home/banner",
     params: {
       distributionSite,
@@ -31,7 +31,7 @@ export function getBannerAPI(params = {}) {
  * @return {*}
  */
 export const getCategoryFilterAPI = (id) => {
-  return http({
+  return request({
     url: "/category/sub/filter",
     params: {
       id,
@@ -50,7 +50,7 @@ export const getCategoryFilterAPI = (id) => {
  * @return {*}
  */
 export const getSubCategoryAPI = (data) => {
-  return http({
+  return request({
     url: "/category/goods/temporary",
     method: "POST",
     data,

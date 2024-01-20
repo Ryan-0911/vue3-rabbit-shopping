@@ -1,4 +1,4 @@
-import http from "@/utils/http";
+import request from "@/utils/request";
 
 /**
  * @description: 獲取輪播圖
@@ -6,7 +6,7 @@ import http from "@/utils/http";
  * @return {*}
  */
 export function getBannerAPI() {
-  return http({
+  return request({
     url: "/home/banner",
   });
 }
@@ -17,7 +17,7 @@ export function getBannerAPI() {
  * @return {*}
  */
 export const getNewAPI = () => {
-  return http({
+  return request({
     url: "/home/new",
   });
 };
@@ -28,7 +28,7 @@ export const getNewAPI = () => {
  * @return {*}
  */
 export const getHotAPI = () => {
-  return http({
+  return request({
     url: "home/hot",
   });
 };
@@ -39,7 +39,7 @@ export const getHotAPI = () => {
  * @return {*}
  */
 export const getGoodsAPI = () => {
-  return http({
+  return request({
     url: "/home/goods",
   });
 };

@@ -1,7 +1,7 @@
-import http from "@/utils/http";
+import request from "@/utils/request";
 
 export function getCategoryAPI() {
-  return http({
+  return request({
     url: "/home/category/head",
   });
 }
