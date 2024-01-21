@@ -1,12 +1,21 @@
-<script setup></script>
+<script setup>
+// import { ref } from "vue";
+// const show = localStorage.getItem("user");
+// console.log(show);
+import { useUserStore } from "@/stores/user";
+const userStore = useUserStore();
+</script>
 
 <template>
   <nav class="app-topnav">
     <div class="container">
       <ul>
-        <template v-if="false">
+        <template v-if="userStore.userInfo.account">
           <li>
-            <a href="javascript:;"><i class="iconfont icon-user"></i>周杰伦</a>
+            <a href="javascript:;"
+              ><i class="iconfont icon-user"></i
+              >{{ userStore.userInfo.account }}</a
+            >
           </li>
           <li>
             <el-popconfirm
