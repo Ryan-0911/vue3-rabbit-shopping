@@ -1,9 +1,12 @@
 <script setup>
-// import { ref } from "vue";
-// const show = localStorage.getItem("user");
-// console.log(show);
 import { useUserStore } from "@/stores/user";
+import { useRouter } from "vue-router";
+const router = useRouter();
 const userStore = useUserStore();
+const logOut = () => {
+  userStore.logoutUser();
+  router.replace("/login");
+};
 </script>
 
 <template>
@@ -19,6 +22,7 @@ const userStore = useUserStore();
           </li>
           <li>
             <el-popconfirm
+              @confirm="logOut"
               title="确认退出吗?"
               confirm-button-text="确认"
               cancel-button-text="取消"

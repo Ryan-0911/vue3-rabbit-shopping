@@ -7,7 +7,7 @@ import { useUserStore } from "@/stores/user";
 
 // 表单数据对象
 const userInfo = ref({
-  account: "1311111111",
+  account: "xiaotuxian001",
   password: "123456",
   agree: true,
 });
