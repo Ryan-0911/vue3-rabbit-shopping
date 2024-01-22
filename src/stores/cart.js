@@ -6,25 +6,35 @@ import { ref } from "vue";
 export const useCartStore = defineStore(
   "cart",
   () => {
-    // 1. 定义state - cartList
+    // state
     const cartList = ref([]);
-    // 2. 定义action - addCart
-    const addCart = (goods) => {
-      console.log("添加", goods);
-      // 添加购物车操作
-      // 过匹配传递过来的商品对象中的skuId能不能在cartList中找到，找到了就是添加过
-      const item = cartList.value.find((item) => goods.skuId === item.skuId);
+
+    // action
+    // 加入購物車
+    const addCart = (sku) => {
+      // 看傳遞過來的商品物件中的skuId能不能在cartList中找到，找到了就是添加過
+      const item = cartList.value.find((item) => sku.skuId === item.skuId);
       if (item) {
-        // 添加過 - 修改數量
-        item.count += goods.count;
+        // 添加過 -> 修改數量
+        item.count += sku.count;
       } else {
-        // 沒有添加過 - 直接push
-        cartList.value.push(goods);
+        // 沒有添加過 -> 直接push
+        cartList.value.push(sku);
       }
     };
+    // 刪除購物車
+    const delCart = (skuId) => {
+      // 方式1: 利用findIndex()+splice()
+      //   const idx = cartList.value.findIndex((item) => skuId === item.skuId);
+      //   cartList.value.splice(idx, 1);
+      //   方式2: 利用filter;
+      cartList.value = cartList.value.filter((item) => item.skuId != skuId);
+    };
+
     return {
       cartList,
       addCart,
+      delCart,
     };
   },
   {
