@@ -37,6 +37,7 @@ const addCart = () => {
       id: goods.value.id, // 商品ID
       name: goods.value.name, // 商品名稱
       picture: goods.value.mainPictures[0], // 商品圖片
+      price: goods.value.price, // 商品價格
       count: count.value, // 商品數量
       skuId: skuObj.skuId, // 商品規格Id
       attrsText: skuObj.specsText, // 商品規格文

@@ -1,15 +1,15 @@
 // 封装购物车模块
 
 import { defineStore } from "pinia";
-import { ref } from "vue";
+import { ref, computed } from "vue";
 
 export const useCartStore = defineStore(
   "cart",
   () => {
-    // state
+    // state----------------------------------------------------------------------------------
     const cartList = ref([]);
 
-    // action
+    // action----------------------------------------------------------------------------------
     // 加入購物車
     const addCart = (sku) => {
       // 看傳遞過來的商品物件中的skuId能不能在cartList中找到，找到了就是添加過
@@ -31,10 +31,22 @@ export const useCartStore = defineStore(
       cartList.value = cartList.value.filter((item) => item.skuId != skuId);
     };
 
+    // computed attr----------------------------------------------------------------------------------
+    // 總數
+    const totalNum = computed(() => {
+      return cartList.value.reduce((a, c) => a + c.count, 0);
+    });
+    // 總價
+    const totalPrice = computed(() => {
+      return cartList.value.reduce((a, c) => a + c.count * c.price, 0);
+    });
+
     return {
       cartList,
       addCart,
       delCart,
+      totalNum,
+      totalPrice,
     };
   },
   {
