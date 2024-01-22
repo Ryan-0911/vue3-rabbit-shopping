@@ -3,8 +3,9 @@ import { getDetail } from "@/apis/detail";
 import { onMounted, ref } from "vue";
 import { useRoute } from "vue-router";
 import DetailHot from "@/views/Detail/components/DetailHot.vue";
-// import ImageView from "@/components/ImageView/index.vue";
-// import XtxSku from "@/components/XtxSku/index.vue";
+import { ElMessage } from "element-plus";
+// import "element-plus/theme-chalk/el-message.css";
+import { useCartStore } from "@/stores/cart";
 
 const goods = ref({});
 const route = useRoute();
@@ -15,8 +16,37 @@ const getGoods = async () => {
 onMounted(() => getGoods());
 
 // sku 規格被操作時
+let skuObj = {};
 const skuChange = (sku) => {
   console.log(sku);
+  skuObj = sku;
+};
+
+// 商品數量
+const count = ref(1);
+const countChange = () => {
+  count.value;
+};
+
+// 加入購物車
+const cartStore = useCartStore();
+const addCart = () => {
+  // 有選規格
+  if (skuObj.skuId) {
+    cartStore.addCart({
+      id: goods.value.id, // 商品ID
+      name: goods.value.name, // 商品名稱
+      picture: goods.value.mainPictures[0], // 商品圖片
+      count: count.value, // 商品數量
+      skuId: skuObj.skuId, // 商品規格Id
+      attrsText: skuObj.specsText, // 商品規格文
+      selected: true, // 商品是否選中
+    });
+  }
+  // 沒選規格
+  else {
+    ElMessage.warning("請選擇規格");
+  }
 };
 </script>
 
@@ -99,10 +129,12 @@ const skuChange = (sku) => {
               <!-- sku组件 -->
               <XtxSku :goods="goods" @change="skuChange" />
               <!-- 数据组件 -->
-
+              <el-input-number v-model="count" @change="countChange" />
               <!-- 按钮组件 -->
               <div>
-                <el-button size="large" class="btn"> 加入购物车 </el-button>
+                <el-button size="large" class="btn" @click="addCart">
+                  加入购物车
+                </el-button>
               </div>
             </div>
           </div>
