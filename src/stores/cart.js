@@ -31,9 +31,15 @@ export const useCartStore = defineStore(
       cartList.value = cartList.value.filter((item) => item.skuId != skuId);
     };
     // 單選
-    const singleCheck = (skuId, selected) => {
-      const item = cartList.value.find((item) => (item.skuId = skuId));
+    const singleCheck = (id, selected) => {
+      const item = cartList.value.find((item) => item.id == id);
       item.selected = selected;
+    };
+    //全選
+    const allCheck = (selected) => {
+      cartList.value.forEach((item) => {
+        item.selected = selected;
+      });
     };
 
     // computed attr----------------------------------------------------------------------------------
@@ -45,6 +51,10 @@ export const useCartStore = defineStore(
     const totalPrice = computed(() => {
       return cartList.value.reduce((a, c) => a + c.count * c.price, 0);
     });
+    //是否全選
+    const isAll = computed(() => {
+      return cartList.value.every((item) => item.selected);
+    });
 
     return {
       cartList,
@@ -53,6 +63,8 @@ export const useCartStore = defineStore(
       totalNum,
       totalPrice,
       singleCheck,
+      isAll,
+      allCheck,
     };
   },
   {

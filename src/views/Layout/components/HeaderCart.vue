@@ -35,7 +35,10 @@ const cartStore = useCartStore();
           <p>共 {{ cartStore.totalNum }} 件商品</p>
           <p>¥ {{ cartStore.totalPrice.toFixed(2) }}</p>
         </div>
-        <el-button size="large" type="primary" @click="$router.push('cartlist')"
+        <el-button
+          size="large"
+          type="primary"
+          @click="$router.push('/cartlist')"
           >去购物车结算</el-button
         >
       </div>
