@@ -30,6 +30,11 @@ export const useCartStore = defineStore(
       //   方式2: 利用filter;
       cartList.value = cartList.value.filter((item) => item.skuId != skuId);
     };
+    // 單選
+    const singleCheck = (skuId, selected) => {
+      const item = cartList.value.find((item) => (item.skuId = skuId));
+      item.selected = selected;
+    };
 
     // computed attr----------------------------------------------------------------------------------
     // 總數
@@ -47,6 +52,7 @@ export const useCartStore = defineStore(
       delCart,
       totalNum,
       totalPrice,
+      singleCheck,
     };
   },
   {
