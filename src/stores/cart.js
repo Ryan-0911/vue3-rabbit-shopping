@@ -35,7 +35,7 @@ export const useCartStore = defineStore(
       const item = cartList.value.find((item) => item.id == id);
       item.selected = selected;
     };
-    //全選
+    // 全選
     const allCheck = (selected) => {
       cartList.value.forEach((item) => {
         item.selected = selected;
@@ -55,6 +55,18 @@ export const useCartStore = defineStore(
     const isAll = computed(() => {
       return cartList.value.every((item) => item.selected);
     });
+    // 已選擇商品總數
+    const selectedNum = computed(() => {
+      return cartList.value
+        .filter((item) => item.selected)
+        .reduce((a, c) => a + c.count, 0);
+    });
+    // 已選擇商品總價
+    const selectedPrice = computed(() => {
+      return cartList.value
+        .filter((item) => item.selected)
+        .reduce((a, c) => a + c.count * c.price, 0);
+    });
 
     return {
       cartList,
@@ -65,6 +77,8 @@ export const useCartStore = defineStore(
       singleCheck,
       isAll,
       allCheck,
+      selectedNum,
+      selectedPrice,
     };
   },
   {
