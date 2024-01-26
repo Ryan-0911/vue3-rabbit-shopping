@@ -29,3 +29,12 @@ export const delCartAPI = (ids) => {
     },
   });
 };
+
+// 本地購物車合併至伺服器
+export const mergeCartAPI = (cart) => {
+  return request({
+    url: "/member/cart/merge",
+    method: "POST",
+    data: cart,
+  });
+};
