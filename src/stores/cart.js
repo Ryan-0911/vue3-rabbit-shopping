@@ -1,46 +1,14 @@
-// 封装购物车模块
-
 import { defineStore } from "pinia";
 import { ref, computed } from "vue";
+import { useUserStore } from "@/stores/user";
+import { insertCartAPI, findNewCartListAPI } from "@/apis/cart";
 
 export const useCartStore = defineStore(
   "cart",
   () => {
     // state----------------------------------------------------------------------------------
     const cartList = ref([]);
-
-    // action----------------------------------------------------------------------------------
-    // 加入購物車
-    const addCart = (sku) => {
-      // 看傳遞過來的商品物件中的skuId能不能在cartList中找到，找到了就是添加過
-      const item = cartList.value.find((item) => sku.skuId === item.skuId);
-      if (item) {
-        // 添加過 -> 修改數量
-        item.count += sku.count;
-      } else {
-        // 沒有添加過 -> 直接push
-        cartList.value.push(sku);
-      }
-    };
-    // 刪除購物車
-    const delCart = (skuId) => {
-      // 方式1: 利用findIndex()+splice()
-      //   const idx = cartList.value.findIndex((item) => skuId === item.skuId);
-      //   cartList.value.splice(idx, 1);
-      //   方式2: 利用filter;
-      cartList.value = cartList.value.filter((item) => item.skuId != skuId);
-    };
-    // 單選
-    const singleCheck = (id, selected) => {
-      const item = cartList.value.find((item) => item.id == id);
-      item.selected = selected;
-    };
-    // 全選
-    const allCheck = (selected) => {
-      cartList.value.forEach((item) => {
-        item.selected = selected;
-      });
-    };
+    console.log(cartList);
 
     // computed attr----------------------------------------------------------------------------------
     // 總數
@@ -67,6 +35,52 @@ export const useCartStore = defineStore(
         .filter((item) => item.selected)
         .reduce((a, c) => a + c.count * c.price, 0);
     });
+    // 是否登入
+    const userStore = useUserStore();
+    const isLogin = computed(() => {
+      return userStore.userInfo.token;
+    });
+
+    // action----------------------------------------------------------------------------------
+    // 加入購物車
+    const addCart = async (sku) => {
+      console.log(sku);
+      const { skuId, count } = sku;
+      if (isLogin.value) {
+        await insertCartAPI({ skuId, count });
+        const res = await findNewCartListAPI();
+        cartList.value = res.result;
+      } else {
+        // 看傳遞過來的商品物件中的skuId能不能在cartList中找到，找到了就是添加過
+        const item = cartList.value.find((item) => sku.skuId === item.skuId);
+        if (item) {
+          // 添加過 -> 修改數量
+          item.count += sku.count;
+        } else {
+          // 沒有添加過 -> 直接push
+          cartList.value.push(sku);
+        }
+      }
+    };
+    // 刪除購物車
+    const delCart = (skuId) => {
+      // 方式1: 利用findIndex()+splice()
+      //   const idx = cartList.value.findIndex((item) => skuId === item.skuId);
+      //   cartList.value.splice(idx, 1);
+      //   方式2: 利用filter;
+      cartList.value = cartList.value.filter((item) => item.skuId != skuId);
+    };
+    // 單選
+    const singleCheck = (id, selected) => {
+      const item = cartList.value.find((item) => item.id == id);
+      item.selected = selected;
+    };
+    // 全選
+    const allCheck = (selected) => {
+      cartList.value.forEach((item) => {
+        item.selected = selected;
+      });
+    };
 
     return {
       cartList,
