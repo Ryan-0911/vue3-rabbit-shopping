@@ -1,11 +1,17 @@
 import { defineStore } from "pinia";
 import { ref, computed } from "vue";
 import { useUserStore } from "@/stores/user";
-import { insertCartAPI, findNewCartListAPI } from "@/apis/cart";
+import { insertCartAPI, findNewCartListAPI, delCartAPI } from "@/apis/cart";
 
 export const useCartStore = defineStore(
   "cart",
   () => {
+    // 重新獲取購物車列表
+    const getNewCartList = async () => {
+      const res = await findNewCartListAPI();
+      cartList.value = res.result;
+    };
+
     // state----------------------------------------------------------------------------------
     const cartList = ref([]);
     console.log(cartList);
@@ -44,12 +50,10 @@ export const useCartStore = defineStore(
     // action----------------------------------------------------------------------------------
     // 加入購物車
     const addCart = async (sku) => {
-      console.log(sku);
       const { skuId, count } = sku;
       if (isLogin.value) {
         await insertCartAPI({ skuId, count });
-        const res = await findNewCartListAPI();
-        cartList.value = res.result;
+        getNewCartList();
       } else {
         // 看傳遞過來的商品物件中的skuId能不能在cartList中找到，找到了就是添加過
         const item = cartList.value.find((item) => sku.skuId === item.skuId);
@@ -63,12 +67,17 @@ export const useCartStore = defineStore(
       }
     };
     // 刪除購物車
-    const delCart = (skuId) => {
-      // 方式1: 利用findIndex()+splice()
-      //   const idx = cartList.value.findIndex((item) => skuId === item.skuId);
-      //   cartList.value.splice(idx, 1);
-      //   方式2: 利用filter;
-      cartList.value = cartList.value.filter((item) => item.skuId != skuId);
+    const delCart = async (skuId) => {
+      if (isLogin.value) {
+        delCartAPI([skuId]);
+        getNewCartList();
+      } else {
+        // 方式1: 利用findIndex()+splice()
+        //   const idx = cartList.value.findIndex((item) => skuId === item.skuId);
+        //   cartList.value.splice(idx, 1);
+        //   方式2: 利用filter;
+        cartList.value = cartList.value.filter((item) => item.skuId != skuId);
+      }
     };
     // 單選
     const singleCheck = (id, selected) => {
