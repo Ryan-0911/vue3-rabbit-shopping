@@ -79,6 +79,10 @@ export const useCartStore = defineStore(
         cartList.value = cartList.value.filter((item) => item.skuId != skuId);
       }
     };
+    // 清空購物車
+    const clearCart = () => {
+      cartList.value = [];
+    };
     // 單選
     const singleCheck = (id, selected) => {
       const item = cartList.value.find((item) => item.id == id);
@@ -95,6 +99,7 @@ export const useCartStore = defineStore(
       cartList,
       addCart,
       delCart,
+      clearCart,
       totalNum,
       totalPrice,
       singleCheck,
