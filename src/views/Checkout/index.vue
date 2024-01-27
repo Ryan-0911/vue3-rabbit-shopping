@@ -2,10 +2,9 @@
 import { getCheckoutInfoAPI } from "@/apis/checkout";
 import { onMounted, ref } from "vue";
 
+// 獲取訂單資訊
 const checkInfo = ref({}); // 訂單
 const curAddress = ref({}); // 地址
-const showDialog = ref(false); // 切換地址彈框
-
 const getCheckoutInfo = async () => {
   const res = await getCheckoutInfoAPI();
   checkInfo.value = res.result;
@@ -13,6 +12,21 @@ const getCheckoutInfo = async () => {
     (item) => item.isDefault === 0
   );
 };
+
+// 地址彈框
+const showDialog = ref(false); // 切換地址彈框
+const activeAddress = ref({});
+const switchAddress = (item) => {
+  activeAddress.value = item;
+};
+
+// 地址確定
+const confirmAddress = () => {
+  curAddress.value = activeAddress.value;
+  showDialog.value = false;
+  activeAddress.value = {};
+};
+
 onMounted(() => {
   getCheckoutInfo();
 });
@@ -135,8 +149,10 @@ onMounted(() => {
     <div class="addressWrapper">
       <div
         class="text item"
+        :class="{ active: item.id === activeAddress.id }"
         v-for="item in checkInfo.userAddresses"
         :key="item.id"
+        @click="switchAddress(item)"
       >
         <ul>
           <li>
@@ -150,7 +166,7 @@ onMounted(() => {
     <template #footer>
       <span class="dialog-footer">
         <el-button>取消</el-button>
-        <el-button type="primary">确定</el-button>
+        <el-button type="primary" @click="confirmAddress">确定</el-button>
       </span>
     </template>
   </el-dialog>
