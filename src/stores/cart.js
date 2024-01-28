@@ -9,7 +9,6 @@ export const useCartStore = defineStore(
     // 重新獲取購物車列表
     const getNewCartList = async () => {
       const res = await findNewCartListAPI();
-      console.log(res);
       cartList.value = res.result;
     };
 
