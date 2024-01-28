@@ -16,10 +16,12 @@ const router = createRouter({
   routes: [
     {
       path: "/",
+      name: "layout",
       component: Layout,
       children: [
         {
           path: "", // 默認二級路由
+          name: "home",
           component: Home,
         },
         {
@@ -34,18 +36,22 @@ const router = createRouter({
         },
         {
           path: "detail/:id",
+          name: "detail",
           component: Detail,
         },
         {
           path: "cartlist",
+          name: "cartlist",
           component: CartList,
         },
         {
           path: "checkout",
+          name: "checkout",
           component: Checkout,
         },
         {
           path: "pay",
+          name: "pay",
           component: Pay,
         },
       ],
