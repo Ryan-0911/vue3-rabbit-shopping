@@ -14,6 +14,7 @@ const tabTypes = [
 ];
 // 獲取訂單列表
 const orderList = ref([]);
+const total = ref(0);
 const params = ref({
   orderState: 0,
   page: 1,
@@ -22,13 +23,19 @@ const params = ref({
 const getOrderList = async () => {
   const res = await getUserOrderAPI(params.value);
   orderList.value = res.result.items;
+  total.value = res.result.counts;
 };
 onMounted(() => getOrderList());
-console.log(orderList.value);
 
 // tab切換
 const tabChange = (type) => {
   params.value.orderState = type;
+  getOrderList();
+};
+
+// 分頁
+const pageChange = (page) => {
+  params.value.page = page;
   getOrderList();
 };
 </script>
@@ -126,7 +133,13 @@ const tabChange = (type) => {
           </div>
           <!-- 分页 -->
           <div class="pagination-container">
-            <el-pagination background layout="prev, pager, next" />
+            <el-pagination
+              background
+              :total="total"
+              :page-suze="params.pageSize"
+              layout="prev, pager, next"
+              @current-change="pageChange"
+            />
           </div>
         </div>
       </div>
