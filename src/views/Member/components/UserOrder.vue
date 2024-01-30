@@ -12,6 +12,7 @@ const tabTypes = [
   { name: "complete", label: "已完成" },
   { name: "cancel", label: "已取消" },
 ];
+
 // 獲取訂單列表
 const orderList = ref([]);
 const total = ref(0);
@@ -27,7 +28,7 @@ const getOrderList = async () => {
 };
 onMounted(() => getOrderList());
 
-// tab切換
+// 訂單狀態切換
 const tabChange = (type) => {
   params.value.orderState = type;
   getOrderList();
@@ -37,6 +38,19 @@ const tabChange = (type) => {
 const pageChange = (page) => {
   params.value.page = page;
   getOrderList();
+};
+
+// 訂單狀態對應
+const fomartPayState = (payState) => {
+  const stateMap = {
+    1: "待付款",
+    2: "待发货",
+    3: "待收货",
+    4: "待评价",
+    5: "已完成",
+    6: "已取消",
+  };
+  return stateMap[payState];
 };
 </script>
 
@@ -87,7 +101,7 @@ const pageChange = (page) => {
                 </ul>
               </div>
               <div class="column state">
-                <p>{{ order.orderState }}</p>
+                <p>{{ fomartPayState(order.orderState) }}</p>
                 <p v-if="order.orderState === 3">
                   <a href="javascript:;" class="green">查看物流</a>
                 </p>
