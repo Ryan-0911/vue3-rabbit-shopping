@@ -33,7 +33,10 @@ const router = createRouter({
 });
 ```
 2. 路由緩存問題
-  
+<img src="https://github.com/Ryan-0911/vue3-rabbit-shopping/blob/main/%E9%9F%BF%E6%87%89%E8%B7%AF%E7%94%B1%E5%8F%83%E6%95%B8%E7%9A%84%E8%AE%8A%E5%8C%96.png" height="200px" width="650px" />
+
+[解決方法](https://juejin.cn/post/7324992318418780223)
+
 ## VueUse
 1. **useScroll**：用來實現吸頂導航 (準備吸頂導航組件 -> 獲取滾動距離 -> 以滾動距離為判斷條件來控制組件顯示與否)
 <img src="https://github.com/Ryan-0911/vue3-rabbit-shopping/blob/main/vueUse%E5%90%B8%E9%A0%82%E5%B0%8E%E8%A6%BD%E5%88%97.gif" height="350px" width="700px" />   
