@@ -1,9 +1,9 @@
-## Vite 專案結構調整
+# Vite 專案結構調整
 ![專案結構調整](https://github.com/Ryan-0911/vue3-rabbit-shopping/blob/main/vite-project-structure-adjustment.png)
-## Components
+# Components
 1. 原則：分辨內容切換的區域，如果是整體頁面切換則為一級路由，在一級路由內切換則為二級路由，在二級路由內切換則為三級路由...
 2. 整體路由設計如下：
-## Router
+# Router
 1. 若想設定預設路由，只要將path的參數值設為""
 ```javascript
 const router = createRouter({
